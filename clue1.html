@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Black Chart — Week I</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    min-height: 100vh;
+    background: #0c0a06;
+    background-image:
+      radial-gradient(ellipse at 25% 55%, rgba(38,18,0,0.9) 0%, transparent 55%),
+      radial-gradient(ellipse at 78% 25%, rgba(18,8,0,0.7) 0%, transparent 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    font-family: 'Crimson Text', serif;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 11% 7%,  rgba(255,255,210,.55) 0%,transparent 100%),
+      radial-gradient(1px 1px at 27% 21%, rgba(255,255,210,.30) 0%,transparent 100%),
+      radial-gradient(1px 1px at 46% 4%,  rgba(255,255,210,.60) 0%,transparent 100%),
+      radial-gradient(1px 1px at 62% 17%, rgba(255,255,210,.30) 0%,transparent 100%),
+      radial-gradient(1px 1px at 80% 8%,  rgba(255,255,210,.50) 0%,transparent 100%),
+      radial-gradient(1px 1px at 90% 27%, rgba(255,255,210,.40) 0%,transparent 100%),
+      radial-gradient(1px 1px at  5% 38%, rgba(255,255,210,.30) 0%,transparent 100%),
+      radial-gradient(1px 1px at 53% 33%, rgba(255,255,210,.40) 0%,transparent 100%),
+      radial-gradient(2px 2px at 71% 44%, rgba(255,255,210,.18) 0%,transparent 100%),
+      radial-gradient(1px 1px at 37% 90%, rgba(255,255,210,.28) 0%,transparent 100%),
+      radial-gradient(1px 1px at 84% 78%, rgba(255,255,210,.35) 0%,transparent 100%);
+  }
+
+  /* ── Scroll ── */
+  .scroll {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 520px;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23n)' opacity='0.09'/%3E%3C/svg%3E"),
+      linear-gradient(160deg, #f2e2ac 0%, #e6cf88 45%, #ceaf52 100%);
+    border-radius: 2px;
+    box-shadow:
+      0 0 0 7px #7a5510,
+      0 0 0 11px #3a2304,
+      0 30px 90px rgba(0,0,0,0.85);
+    padding: 52px 48px 44px;
+    animation: unfurl .9s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes unfurl {
+    from { opacity:0; transform:translateY(20px) scaleY(.97); }
+    to   { opacity:1; transform:translateY(0)    scaleY(1);   }
+  }
+
+  .scroll::before,
+  .scroll::after {
+    content: '';
+    display: block;
+    height: 22px;
+    background: linear-gradient(90deg, #2a1500 0%, #7a5010 28%, #a87020 50%, #7a5010 72%, #2a1500 100%);
+    margin: -52px -48px 46px;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 4px 14px rgba(0,0,0,.45);
+  }
+  .scroll::after {
+    margin: 42px -48px -44px;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 -4px 14px rgba(0,0,0,.45);
+  }
+
+  /* ── Riddle ── */
+  .riddle {
+    font-size: clamp(1.05rem, 2.6vw, 1.2rem);
+    color: #1a0e00;
+    line-height: 1.95;
+    text-align: center;
+    margin-bottom: 34px;
+  }
+
+  /* ── Hint ── */
+  .hint {
+    display: none;
+    font-style: italic;
+    font-size: 0.93rem;
+    color: #5a3c0e;
+    text-align: center;
+    border-top: 1px solid rgba(0,0,0,.13);
+    padding-top: 18px;
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+  .hint.show { display: block; }
+
+  /* ── Entry ── */
+  .entry { display: flex; gap: 8px; }
+
+  input {
+    flex: 1;
+    background: rgba(255,255,255,.25);
+    border: 1.5px solid rgba(0,0,0,.20);
+    border-radius: 2px;
+    padding: 11px 14px;
+    font-family: 'Crimson Text', serif;
+    font-size: 1.05rem;
+    color: #1a0e00;
+    outline: none;
+    transition: border-color .2s;
+  }
+  input:focus { border-color: rgba(0,0,0,.42); }
+  input::placeholder { color: rgba(70,44,8,.38); }
+
+  button {
+    background: #3a2204;
+    color: #f2e2ac;
+    border: none;
+    padding: 11px 20px;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.76rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+  }
+  button:hover { background: #583410; }
+
+  /* ── Feedback ── */
+  .fb {
+    min-height: 20px;
+    margin-top: 11px;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.80rem;
+    letter-spacing: .04em;
+    text-align: center;
+    color: #6e200e;
+  }
+  .fb.ok { color: #2a5a10; }
+
+  /* ── Revealed next-clue block ── */
+  .nxt {
+    display: none;
+    margin-top: 22px;
+    padding: 18px 16px;
+    background: rgba(0,0,0,.06);
+    border: 1px solid rgba(0,0,0,.14);
+    border-radius: 2px;
+    text-align: center;
+  }
+  .nxt.show { display: block; }
+
+  .nxt p {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #4a3010;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .nxt .url {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.86rem;
+    color: #1a0e00;
+    word-break: break-all;
+    letter-spacing: .03em;
+  }
+  .nxt .url b { color: #7a1a1a; font-weight: normal; font-size: 1rem; }
+
+  .nxt a {
+    display: inline-block;
+    margin-top: 13px;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.76rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #7a1a1a;
+    text-decoration: none;
+    border-bottom: 1px dashed #7a1a1a;
+  }
+  .nxt a:hover { opacity: .65; }
+</style>
+</head>
+<body>
+<div class="scroll">
+
+  <div class="riddle">
+    I have no mouth, yet I tell of direction.<br>
+    I have no legs, yet I guide all who wander.<br>
+    Sailors worship me when the stars are hidden,<br>
+    and I always know which way is home.<br><br>
+    What am I?
+  </div>
+
+  <div class="hint" id="hint">
+    Every ship carries one in the wheelhouse —<br>
+    a needle that always points north.
+  </div>
+
+  <div class="entry">
+    <input id="inp" type="text" placeholder="your answer…" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button onclick="check()">Submit</button>
+  </div>
+  <div class="fb" id="fb"></div>
+
+  <div class="nxt" id="nxt">
+    <p id="nxtMsg"></p>
+    <div class="url" id="nxtUrl"></div>
+    <a id="nxtLink" href="#" style="display:none;">→ take me there</a>
+  </div>
+
+</div>
+<script>
+  const ACCEPTS = ["compass","a compass","the compass"];
+  const ANSWER  = "compass";
+  const NEXT    = "compass.html";
+  let wrong = 0;
+
+  document.getElementById('inp').addEventListener('keydown', e => { if(e.key==='Enter') check(); });
+
+  async function check() {
+    const val = document.getElementById('inp').value.trim().toLowerCase();
+    const fb  = document.getElementById('fb');
+    if (ACCEPTS.includes(val)) {
+      fb.textContent = ''; fb.className = 'fb ok';
+      await reveal();
+    } else {
+      wrong++;
+      if (wrong >= 3) document.getElementById('hint').classList.add('show');
+      fb.textContent = wrong === 1 ? "That be not it — think harder."
+                     : wrong === 2 ? "Wrong again. The sea mocks ye."
+                     :               "Still wrong. Perhaps the hint will aid ye.";
+      fb.className = 'fb';
+    }
+  }
+
+  async function reveal() {
+    const base = location.href.replace(/[^/]*$/, '');
+    let exists = false;
+    try { const r = await fetch(NEXT, {method:'HEAD', cache:'no-store'}); exists = r.ok; } catch(_){}
+
+    const nxt  = document.getElementById('nxt');
+    const msg  = document.getElementById('nxtMsg');
+    const url  = document.getElementById('nxtUrl');
+    const link = document.getElementById('nxtLink');
+
+    nxt.classList.add('show');
+    if (exists) {
+      msg.textContent    = 'The answer is the path:';
+      url.innerHTML      = base + '<b>' + ANSWER + '</b>.html';
+      link.href          = NEXT;
+      link.style.display = 'inline';
+    } else {
+      msg.innerHTML      = 'Well solved — but the next clue has not yet been revealed.<br>Return next week.';
+    }
+  }
+</script>
+</body>
+</html>

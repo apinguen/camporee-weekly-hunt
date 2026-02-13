@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ghost Ship — Week III</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    min-height: 100vh;
+    background: #060b04;
+    background-image:
+      radial-gradient(ellipse at 30% 50%, rgba(10,26,8,.95) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 30%, rgba(5,14,4,.80) 0%, transparent 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    font-family: 'Crimson Text', serif;
+    overflow: hidden;
+  }
+
+  /* Slow drifting fog wisps */
+  body::before,
+  body::after {
+    content: '';
+    position: fixed; pointer-events: none; z-index: 0;
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: fogDrift ease-in-out infinite alternate;
+  }
+  body::before {
+    width: 60vw; height: 30vh;
+    background: rgba(100,140,80,.07);
+    top: 20%; left: -10%;
+    animation-duration: 18s;
+  }
+  body::after {
+    width: 50vw; height: 25vh;
+    background: rgba(80,120,60,.06);
+    top: 55%; right: -5%;
+    animation-duration: 22s; animation-delay: -8s;
+  }
+  @keyframes fogDrift {
+    from { transform: translateX(0)   scaleY(1);   opacity:.6; }
+    to   { transform: translateX(8%)  scaleY(1.15); opacity:1; }
+  }
+
+  /* ── Scroll ── */
+  .scroll {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 520px;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23n)' opacity='0.1'/%3E%3C/svg%3E"),
+      linear-gradient(158deg, #d8e8c8 0%, #c4d8a8 45%, #a0b878 100%);
+    border-radius: 2px;
+    box-shadow:
+      0 0 0 7px #4a6a20,
+      0 0 0 11px #1e2e08,
+      0 0 40px rgba(80,120,40,.15),
+      0 30px 90px rgba(0,0,0,0.85);
+    padding: 52px 48px 44px;
+    animation: unfurl .9s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes unfurl {
+    from { opacity:0; transform:translateY(20px) scaleY(.97); }
+    to   { opacity:1; transform:translateY(0)    scaleY(1);   }
+  }
+
+  .scroll::before,
+  .scroll::after {
+    content: '';
+    display: block;
+    height: 22px;
+    background: linear-gradient(90deg, #1e2e08 0%, #4a6a20 28%, #6a8a30 50%, #4a6a20 72%, #1e2e08 100%);
+    margin: -52px -48px 46px;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 4px 14px rgba(0,0,0,.5);
+  }
+  .scroll::after {
+    margin: 42px -48px -44px;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 -4px 14px rgba(0,0,0,.5);
+  }
+
+  .riddle {
+    font-size: clamp(1.05rem, 2.6vw, 1.2rem);
+    color: #141e08;
+    line-height: 1.95;
+    text-align: center;
+    margin-bottom: 34px;
+  }
+
+  .hint {
+    display: none;
+    font-style: italic;
+    font-size: 0.93rem;
+    color: #3a5018;
+    text-align: center;
+    border-top: 1px solid rgba(0,0,0,.13);
+    padding-top: 18px;
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+  .hint.show { display: block; }
+
+  .entry { display: flex; gap: 8px; }
+
+  input {
+    flex: 1;
+    background: rgba(255,255,255,.22);
+    border: 1.5px solid rgba(0,0,0,.18);
+    border-radius: 2px;
+    padding: 11px 14px;
+    font-family: 'Crimson Text', serif;
+    font-size: 1.05rem;
+    color: #141e08;
+    outline: none;
+    transition: border-color .2s;
+  }
+  input:focus { border-color: rgba(0,0,0,.40); }
+  input::placeholder { color: rgba(40,60,20,.35); }
+
+  button {
+    background: #1e2e08;
+    color: #d8e8c8;
+    border: none;
+    padding: 11px 20px;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.76rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+  }
+  button:hover { background: #3a5018; }
+
+  .fb {
+    min-height: 20px;
+    margin-top: 11px;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.80rem;
+    letter-spacing: .04em;
+    text-align: center;
+    color: #4a3010;
+  }
+  .fb.ok { color: #2a5a10; }
+
+  .nxt {
+    display: none;
+    margin-top: 22px;
+    padding: 18px 16px;
+    background: rgba(0,0,0,.06);
+    border: 1px solid rgba(0,0,0,.14);
+    border-radius: 2px;
+    text-align: center;
+  }
+  .nxt.show { display: block; }
+  .nxt p { font-style: italic; font-size: 0.95rem; color: #2a3a18; line-height: 1.6; margin-bottom: 10px; }
+  .nxt .url { font-family: 'Special Elite', cursive; font-size: 0.86rem; color: #141e08; word-break: break-all; letter-spacing: .03em; }
+  .nxt .url b { color: #3a5a10; font-weight: normal; font-size: 1rem; }
+  .nxt a {
+    display: inline-block; margin-top: 13px;
+    font-family: 'Special Elite', cursive; font-size: 0.76rem; letter-spacing: .14em;
+    text-transform: uppercase; color: #3a5a10; text-decoration: none; border-bottom: 1px dashed #3a5a10;
+  }
+  .nxt a:hover { opacity: .65; }
+</style>
+</head>
+<body>
+<div class="scroll">
+
+  <div class="riddle">
+    A pirate buries his treasure in a chest.<br>
+    He digs a hole 3 feet wide, 3 feet long,<br>
+    and 3 feet deep.<br><br>
+    How much dirt is in the hole?
+  </div>
+
+  <div class="hint" id="hint">
+    Think carefully on what a hole truly is —<br>
+    has the captain created something,<br>
+    or merely removed it?
+  </div>
+
+  <div class="entry">
+    <input id="inp" type="text" placeholder="your answer…" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button onclick="check()">Submit</button>
+  </div>
+  <div class="fb" id="fb"></div>
+
+  <div class="nxt" id="nxt">
+    <p id="nxtMsg"></p>
+    <div class="url" id="nxtUrl"></div>
+    <a id="nxtLink" href="#" style="display:none;">→ take me there</a>
+  </div>
+
+</div>
+<script>
+  const ACCEPTS = ["none","zero","0","no dirt","nothing","there is no dirt","no dirt in a hole"];
+  const ANSWER  = "none";
+  const NEXT    = "none.html";
+  let wrong = 0;
+
+  document.getElementById('inp').addEventListener('keydown', e => { if(e.key==='Enter') check(); });
+
+  async function check() {
+    const val = document.getElementById('inp').value.trim().toLowerCase();
+    const fb  = document.getElementById('fb');
+    if (ACCEPTS.includes(val)) {
+      fb.textContent = ''; fb.className = 'fb ok';
+      await reveal();
+    } else {
+      wrong++;
+      if (wrong >= 3) document.getElementById('hint').classList.add('show');
+      fb.textContent = wrong === 1 ? "That be not it — think harder."
+                     : wrong === 2 ? "Wrong again. The sea mocks ye."
+                     :               "Still wrong. Perhaps the hint will aid ye.";
+      fb.className = 'fb';
+    }
+  }
+
+  async function reveal() {
+    const base = location.href.replace(/[^/]*$/, '');
+    let exists = false;
+    try { const r = await fetch(NEXT, {method:'HEAD', cache:'no-store'}); exists = r.ok; } catch(_){}
+
+    const nxt  = document.getElementById('nxt');
+    const msg  = document.getElementById('nxtMsg');
+    const url  = document.getElementById('nxtUrl');
+    const link = document.getElementById('nxtLink');
+
+    nxt.classList.add('show');
+    if (exists) {
+      msg.textContent    = 'The answer is the path:';
+      url.innerHTML      = base + '<b>' + ANSWER + '</b>.html';
+      link.href          = NEXT;
+      link.style.display = 'inline';
+    } else {
+      msg.innerHTML      = 'Well solved — but the next clue has not yet been revealed.<br>Return next week.';
+    }
+  }
+</script>
+</body>
+</html>
