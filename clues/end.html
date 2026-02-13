@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X Marks the Spot — Treasure Found</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    min-height: 100vh;
+    background: #0a0700;
+    background-image:
+      radial-gradient(ellipse at 50% 50%, rgba(30,16,0,.95) 0%, transparent 65%),
+      radial-gradient(ellipse at 15% 25%, rgba(20,10,0,.80) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 75%, rgba(15,8,0,.70)  0%, transparent 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    font-family: 'Crimson Text', serif;
+    overflow-x: hidden;
+  }
+
+  /* Candlelight flicker glow */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse at 50% 48%, rgba(120,55,0,.14) 0%, transparent 55%);
+    animation: flicker 3.5s ease-in-out infinite;
+  }
+  @keyframes flicker {
+    0%,100%{ opacity:.7; }
+    45%    { opacity:.7; }
+    48%    { opacity:.3; }
+    52%    { opacity:.7; }
+    78%    { opacity:.7; }
+    81%    { opacity:.45; }
+    84%    { opacity:.7; }
+  }
+
+  /* Gold dust motes */
+  body::after {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 22% 35%, rgba(255,200,60,.3) 0%,transparent 100%),
+      radial-gradient(1px 1px at 48% 22%, rgba(255,200,60,.2) 0%,transparent 100%),
+      radial-gradient(1px 1px at 68% 40%, rgba(255,200,60,.3) 0%,transparent 100%),
+      radial-gradient(2px 2px at 35% 58%, rgba(255,200,60,.15) 0%,transparent 100%),
+      radial-gradient(1px 1px at 80% 28%, rgba(255,200,60,.25) 0%,transparent 100%),
+      radial-gradient(1px 1px at 14% 70%, rgba(255,200,60,.20) 0%,transparent 100%),
+      radial-gradient(1px 1px at 58% 75%, rgba(255,200,60,.18) 0%,transparent 100%);
+    animation: motes 8s ease-in-out infinite alternate;
+  }
+  @keyframes motes {
+    from { transform: translateY(0); opacity:.8; }
+    to   { transform: translateY(-6px); opacity:1; }
+  }
+
+  /* ── Scroll ── */
+  .scroll {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 520px;
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.4' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='500' height='500' filter='url(%23n)' opacity='0.11'/%3E%3C/svg%3E"),
+      linear-gradient(155deg, #faf0c0 0%, #ecd878 45%, #d4b040 100%);
+    border-radius: 2px;
+    box-shadow:
+      0 0 0 5px #c8980a,
+      0 0 0 8px #8a6408,
+      0 0 0 12px #3a2804,
+      0 0 60px rgba(180,110,0,.30),
+      0 30px 90px rgba(0,0,0,0.85);
+    padding: 52px 48px 44px;
+    animation: unfurl .9s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes unfurl {
+    from { opacity:0; transform:translateY(20px) scaleY(.97); }
+    to   { opacity:1; transform:translateY(0)    scaleY(1);   }
+  }
+
+  .scroll::before,
+  .scroll::after {
+    content: '';
+    display: block;
+    height: 22px;
+    background: linear-gradient(90deg, #3a2804 0%, #8a6408 25%, #c8980a 40%, #e0b820 50%, #c8980a 60%, #8a6408 75%, #3a2804 100%);
+    margin: -52px -48px 46px;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 4px 14px rgba(0,0,0,.5);
+  }
+  .scroll::after {
+    margin: 42px -48px -44px;
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0 -4px 14px rgba(0,0,0,.5);
+  }
+
+  .message {
+    font-size: clamp(1.05rem, 2.6vw, 1.2rem);
+    color: #1a1000;
+    line-height: 1.95;
+    text-align: center;
+  }
+
+  .message .title {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+    color: #7a1a1a;
+    letter-spacing: .06em;
+    margin-bottom: 24px;
+  }
+
+  .message .skull {
+    font-size: 2.4rem;
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  .message .closing {
+    margin-top: 28px;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #5a3e08;
+  }
+</style>
+</head>
+<body>
+<div class="scroll">
+
+  <div class="message">
+    <span class="skull">🏴‍☠️</span>
+    <div class="title">Congratulations, Pirate!</div>
+    Ye have solved every riddle,<br>
+    navigated every twist,<br>
+    and followed the map to its end.<br><br>
+    Email apinguen@gmail.com with the word "Camporee2026Treasure" <br> to receive your prize of spirit coins.<br><br>
+  </div>
+
+</div>
+</body>
+</html>
